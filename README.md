@@ -17,8 +17,7 @@
 
   <p align="center">
     <sup>1</sup> KAIST&nbsp;AI ·
-    <sup>2</sup> Yonsei&nbsp;University ·
-    <sup>3</sup> Samsung&nbsp;Electronics
+    <sup>2</sup> Samsung&nbsp;Electronics
   </p>
 
   <p align="center" style="font-size: 0.9em; color: gray;">
