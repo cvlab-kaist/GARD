@@ -5,13 +5,13 @@
     <a href="#">Jin&nbsp;Hyeon&nbsp;Kim<sup>1*</sup></a> ·
     <a href="#">Jaeeun&nbsp;Lee<sup>1*</sup></a> ·
     <a href="#">Claire&nbsp;Kim<sup>1</sup></a> ·
-    <a href="#">Kyoungjin&nbsp;Oh<sup>2</sup></a> ·
+    <a href="#">Kyoungjin&nbsp;Oh<sup>1</sup></a> ·
     <a href="#">Paul&nbsp;Hyunbin&nbsp;Cho<sup>1</sup></a> ·
     <a href="#">Jaewon&nbsp;Min<sup>1</sup></a> ·
     <a href="#">Yeji&nbsp;Choi<sup>1</sup></a> ·
-    <a href="#">Jihye&nbsp;Park<sup>3</sup></a> ·
-    <a href="#">Minkyu&nbsp;Park<sup>3</sup></a> ·
-    <a href="#">Hyunhee&nbsp;Park<sup>3&dagger;</sup></a> ·
+    <a href="#">Jihye&nbsp;Park<sup>2</sup></a> ·
+    <a href="#">Hyunhee&nbsp;Park<sup>2</sup></a> ·
+    <a href="#">Minkyu&nbsp;Park<sup>2</sup></a> ·
     <a href="https://cvlab.kaist.ac.kr/">Seungryong&nbsp;Kim<sup>1&dagger;</sup></a>
   </p>
 
