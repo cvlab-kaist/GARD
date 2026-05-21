@@ -902,8 +902,9 @@
       "type": "spacer",
       "visible": true,
       "content": {
-        "height": 70
-      }
+        "height": 60
+      },
+      "paddingBottom": 16
     },
     {
       "type": "bibtex",
@@ -913,6 +914,14 @@
         "bibtex": "Coming Soon..."
       },
       "id": "3c3d1b51"
+    },
+    {
+      "id": "fef709a8",
+      "type": "spacer",
+      "visible": true,
+      "content": {
+        "height": 130
+      }
     },
     {
       "id": "fdbfe592",
