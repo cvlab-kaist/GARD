@@ -1,0 +1,912 @@
+{
+  "meta": {
+    "title": "Geometry-Aware Representation Denoising for Robust Multi-view 3D Reconstruction",
+    "template": "unified",
+    "theme": {
+      "primaryColor": "#27272A",
+      "secondaryColor": "#52525B",
+      "accentColor": "#9B8EA8",
+      "backgroundColor": "#FAFAFA",
+      "surfaceColor": "#F4F4F5",
+      "textColor": "#18181B",
+      "textSecondaryColor": "#71717A",
+      "borderColor": "#E4E4E7",
+      "fontFamily": "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+      "headingFontFamily": "'Noto Sans', sans-serif",
+      "monoFontFamily": "'JetBrains Mono', monospace",
+      "baseFontSize": 16,
+      "headingFontSize": 1.8,
+      "bodyLineHeight": 1.5,
+      "borderRadius": 10,
+      "maxWidth": 1040,
+      "sectionSpacing": 16,
+      "contentPaddingX": 40,
+      "navStyle": "none",
+      "navTopPreset": "default",
+      "navSidePreset": "clean",
+      "navSidePosition": "left",
+      "navSideAlign": "center",
+      "navBackground": "#FFFFFF",
+      "navTextColor": "#1E293B",
+      "navAccentColor": "#a51fb7",
+      "heroStyle": "split",
+      "heroBackground": "#FAFAFA",
+      "heroGradientFrom": "#FAFAFA",
+      "heroGradientTo": "#FAFAFA",
+      "heroTitleSize": 3,
+      "heroSubtitleSize": 1.2,
+      "headingStyle": "underline-bar",
+      "headingDecoColor": "#a51fb7",
+      "headingDecoWidth": 36,
+      "headingDecoThickness": 3,
+      "shadowStyle": "subtle",
+      "cardShadow": "0px 4px 12px 0px rgba(0,0,0,0.1)",
+      "cardHoverShadow": "0 4px 16px rgba(0,0,0,0.1)",
+      "animationStyle": "fade-in",
+      "contentBoxStyle": "plain",
+      "contentBoxRadius": 10,
+      "contentBoxPadding": 0,
+      "tldrStyle": "border-left",
+      "tldrBackground": "#FFFFFF",
+      "tldrBorderColor": "#a51fb7",
+      "tldrLabelColor": "#27272A",
+      "calloutStyle": "border-left",
+      "calloutBackground": "#EEF2FF",
+      "calloutBorderColor": "#4338CA",
+      "calloutIconColor": "#4338CA",
+      "buttonStyle": "rounded",
+      "buttonBackground": "#FFFFFF",
+      "buttonTextColor": "#18181B",
+      "buttonBorderColor": "#E4E4E7",
+      "buttonRadius": 10,
+      "buttonHoverEffect": "color-swap",
+      "authorLinkColor": "#27272A",
+      "tableHeaderBg": "#f2e2f9",
+      "tableHeaderColor": "#18181B",
+      "tableBorderColor": "#E4E4E7",
+      "tableHighlightBg": "#F4F4F5",
+      "tableHighlightColor": "#27272A",
+      "bibtexStyle": "card",
+      "bibtexBackground": "#FAFAFA",
+      "bibtexBorderColor": "#E4E4E7",
+      "mediaStyle": "plain",
+      "mediaBorderRadius": 10,
+      "mediaBoxPadding": 0,
+      "captionStyle": "plain",
+      "gridImageFit": "cover",
+      "chartLegendSize": 12,
+      "chartLegendStyle": "minimal",
+      "chartLegendMarker": "dot",
+      "chartTickSize": 11,
+      "teaserMaxWidth": 800,
+      "teaserBorderRadius": 10,
+      "compLabelStyle": "dark",
+      "compLabelABg": "rgba(0,0,0,0.5)",
+      "compLabelAColor": "#ffffff",
+      "compLabelBBg": "rgba(0,0,0,0.5)",
+      "compLabelBColor": "#ffffff",
+      "compSliderColor": "#4338CA",
+      "sectionDivider": "none",
+      "bulletStyle": "numbered",
+      "showSectionLabel": false,
+      "sectionLabelSize": 0.85,
+      "sectionLabelSpacing": 0.12,
+      "sectionLabelColor": "#a51fb7",
+      "sectionTitleSize": 1.6,
+      "labelTitleGap": 10,
+      "heroHighlightColor": "#a51fb7",
+      "teaserMediaStyle": "plain",
+      "teaserBorderColor": "#FFFFFF",
+      "teaserBorderWidth": 5,
+      "mediaBorderColor": "#FFFFFF",
+      "mediaBorderWidth": 5
+    }
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "visible": true,
+      "content": {
+        "projectTitle": "GARD: Geometry-Aware Representation Denoising for Robust Multi-view 3D Reconstruction",
+        "titleLines": [
+          {
+            "text": "GARD: Geometry-Aware Representation Denoising",
+            "size": 0.95,
+            "highlight": false
+          },
+          {
+            "text": "for Robust Multi-view 3D Reconstruction",
+            "size": 1,
+            "highlight": false
+          }
+        ],
+        "venue": "arXiv",
+        "venueYear": "2026"
+      },
+      "id": "2598e57d"
+    },
+    {
+      "type": "authors",
+      "visible": true,
+      "content": {
+        "authors": [
+          {
+            "name": "Jin Hyeon Kim",
+            "affiliation": "KAIST AI",
+            "equal": true
+          },
+          {
+            "name": "Jaeeun Lee",
+            "affiliation": "KAIST AI",
+            "equal": true
+          },
+          {
+            "name": "Claire Kim",
+            "affiliation": "KAIST AI"
+          },
+          {
+            "name": "Kyoungjin Oh",
+            "affiliation": "KAIST AI"
+          },
+          {
+            "name": "Paul Hyunbin Cho",
+            "affiliation": "KAIST AI"
+          },
+          {
+            "name": "Jaewon Min",
+            "affiliation": "KAIST AI"
+          },
+          {
+            "name": "Yeji Choi",
+            "affiliation": "KAIST AI"
+          },
+          {
+            "name": "Jihye Park",
+            "affiliation": "Samsung Electronics"
+          },
+          {
+            "name": "Hyunhee Park",
+            "affiliation": "Samsung Electronics"
+          },
+          {
+            "name": "Minkyu Park",
+            "affiliation": "Samsung Electronics"
+          },
+          {
+            "name": "Seungryong Kim",
+            "affiliation": "KAIST AI",
+            "corresponding": true
+          }
+        ]
+      },
+      "id": "12b79e4f"
+    },
+    {
+      "type": "links",
+      "visible": true,
+      "content": {
+        "links": [
+          {
+            "label": "Paper",
+            "url": "https://github.com/cvlab-kaist/GARD",
+            "icon": "arxiv"
+          },
+          {
+            "label": "Code",
+            "url": "https://github.com/cvlab-kaist/GARD",
+            "icon": "code"
+          }
+        ]
+      },
+      "id": "77776996"
+    },
+    {
+      "type": "teaser",
+      "visible": true,
+      "title": "",
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-000.jpg",
+            "caption": "GARD restores degraded multi-view inputs jointly in geometry-aware feature space, recovering accurate 3D point clouds and high-quality RGB images simultaneously.",
+            "alt": "Figure 1 — GARD framework: degraded views and depths (left) are transformed into restored views, depths, and a clean 3D point cloud (right)."
+          }
+        ]
+      },
+      "id": "bacc49bd"
+    },
+    {
+      "type": "tldr",
+      "visible": true,
+      "title": "TL;DR",
+      "content": {
+        "text": "**~#a51fb7:GARD~** performs diffusion-based denoising directly in the **~#a51fb7:geometry-aware feature space~** of a feed-forward 3D reconstructor — not in pixel space or compressed VAE latents — enabling simultaneous recovery of accurate 3D geometry and high-quality multi-view imagery from degraded inputs."
+      },
+      "id": "30d2c5fe"
+    },
+    {
+      "id": "2062a193",
+      "type": "image",
+      "visible": true,
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-001.jpg",
+            "caption": "",
+            "alt": ""
+          }
+        ]
+      },
+      "title": "Pixel-Space and VAE-Based Restoration Fall Short for 3D Reconstruction",
+      "sectionLabel": "MOTIVATION"
+    },
+    {
+      "type": "text",
+      "visible": true,
+      "content": {
+        "text": "Feed-forward 3D reconstruction models perform well under clean conditions, but fail under real-world degradations such as motion blur.\n\n\n**~#a51fb7:Where should restoration happen?~**\n\n⚠️ Pixel-space restoration: Ignores cross-view consistency \n\n⚠️ Multi-view restoration in VAE-based latent space: Loses fine-grained spatial details\n\n 💡 **GARD**: Restores directly in the **geometry-aware feature space**  \n\n**~#a51fb7:Key Insight~**: The reconstructor’s intermediate feature space preserves both cross-view consistency and visual detail, making it more suitable for restoration than pixel space or compressed VAE latents.",
+        "bulletItems": []
+      },
+      "id": "abd4bf96"
+    },
+    {
+      "type": "image",
+      "visible": true,
+      "sectionLabel": "METHOD",
+      "title": "Overall Framework",
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-002.jpg",
+            "caption": "The GARD denoiser is inserted at layer K of a frozen multi-view encoder, restoring degraded representations before they propagate to geometry and RGB decoders.",
+            "alt": "Figure 3 — GARD framework overview: (a) denoiser inserted into frozen multi-view encoder, (b) training with interpolated flow matching + attention alignment loss, (c) multi-view DDT encoder-decoder architecture with global and frame attention layers."
+          }
+        ]
+      },
+      "id": "4f35cc8c",
+      "paddingBottom": 0
+    },
+    {
+      "id": "9e8dddcd",
+      "type": "text",
+      "visible": true,
+      "content": {
+        "text": "",
+        "bulletItems": [
+          "**~#a51fb7:Encode Features~**: Degraded multi-view images are encoded by a frozen multi-view encoder to produce layer-wise latent representations.",
+          "**~#a51fb7:Representation Denoising~**: The GARD denoiser restores these degraded features using a multi-view diffusion model with interleaved frame-level and global cross-view attention.",
+          "**~#a51fb7:Task-Specific Decoding~**: The restored representations are decoded by their respective decoders to produce geometry predictions and restored RGB images."
+        ]
+      }
+    },
+    {
+      "type": "results-table",
+      "visible": true,
+      "sectionLabel": "Evaluation",
+      "title": "Quantitative Results",
+      "content": {
+        "tableStyle": "boxed",
+        "tableDensity": "normal",
+        "tableAlign": "center",
+        "tables": [
+          {
+            "label": "Pose Estimation (AUC30 ↑)",
+            "headers": [
+              "Method",
+              "HiRoom",
+              "ETH3D",
+              "DTU",
+              "7Scenes",
+              "ScanNet++"
+            ],
+            "rows": [
+              {
+                "cells": [
+                  "HQ Input ",
+                  "96.65",
+                  "84.68",
+                  "98.70",
+                  "86.91",
+                  "92.95"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "LQ Input ",
+                  "__32.90__",
+                  "61.38",
+                  "66.43",
+                  "51.39",
+                  "71.02"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "Restormer",
+                  "26.68",
+                  "57.68",
+                  "67.80",
+                  "75.12",
+                  "__76.12__"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "HI-Diff",
+                  "16.02",
+                  "52.56",
+                  "51.13",
+                  "52.72",
+                  "71.61"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "InstructIR",
+                  "27.68",
+                  "53.80",
+                  "__85.91__",
+                  "74.22",
+                  "68.23"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "MoCE-IR",
+                  "28.60",
+                  "__63.25__",
+                  "84.61",
+                  "65.20",
+                  "72.99"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "VRT",
+                  "30.17",
+                  "58.98",
+                  "67.01",
+                  "48.02",
+                  "72.67"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "FMA-Net",
+                  "18.29",
+                  "53.81",
+                  "40.62",
+                  "38.23",
+                  "55.40"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "$VAE_{MVD}$",
+                  "28.70",
+                  "35.20",
+                  "60.50",
+                  "__76.50__",
+                  "75.00"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "**GARD (Ours)**",
+                  "**67.22**",
+                  "**74.68**",
+                  "**92.37**",
+                  "**84.73**",
+                  "**87.45**"
+                ],
+                "highlight": true
+              }
+            ]
+          },
+          {
+            "label": "3D Reconstruction (F-score ↑)",
+            "headers": [
+              "Method",
+              "HiRoom",
+              "ETH3D",
+              "DTU (Overall ↓)",
+              "7Scenes",
+              "ScanNet++"
+            ],
+            "rows": [
+              {
+                "cells": [
+                  "HQ Input",
+                  "84.05",
+                  "60.81",
+                  "2.475",
+                  "45.15",
+                  "50.25"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "LQ Input ",
+                  "11.74",
+                  "__37.50__",
+                  "6.611",
+                  "18.40",
+                  "24.13"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "Restormer",
+                  "11.21",
+                  "33.97",
+                  "7.272",
+                  "27.92",
+                  "30.45"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "HI-Diff",
+                  "8.07",
+                  "35.10",
+                  "7.758",
+                  "25.92",
+                  "25.83"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "InstructIR",
+                  "__12.41__",
+                  "33.71",
+                  "__5.563__",
+                  "__29.80__",
+                  "26.06"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "MoCE-IR",
+                  "10.62",
+                  "37.15",
+                  "6.120",
+                  "26.31",
+                  "25.97"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "VRT",
+                  "9.45",
+                  "35.14",
+                  "7.570",
+                  "19.53",
+                  "26.72"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "FMA-Net",
+                  "9.61",
+                  "35.65",
+                  "7.415",
+                  "13.37",
+                  "19.66"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "$VAE_{MVD}$",
+                  "11.26",
+                  "25.64",
+                  "7.745",
+                  "28.16",
+                  "28.38"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "**GARD (Ours)**",
+                  "**18.25**",
+                  "**45.79**",
+                  "**4.760**",
+                  "**36.08**",
+                  "**35.77**"
+                ],
+                "highlight": true
+              }
+            ]
+          },
+          {
+            "label": "Image Restoration (PSNR ↑)",
+            "headers": [
+              "Method",
+              "HiRoom",
+              "ETH3D",
+              "DTU",
+              "7Scenes",
+              "ScanNet++"
+            ],
+            "rows": [
+              {
+                "cells": [
+                  "Restormer",
+                  "17.49",
+                  "20.97",
+                  "17.73",
+                  "21.30",
+                  "21.50"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "HI-Diff",
+                  "17.35",
+                  "20.45",
+                  "17.39",
+                  "19.82",
+                  "20.68"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "InstructIR",
+                  "17.51",
+                  "20.93",
+                  "20.38",
+                  "20.93",
+                  "21.15"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "MoCE-IR",
+                  "17.69",
+                  "21.00",
+                  "20.38",
+                  "20.60",
+                  "__21.19__"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "VRT",
+                  "17.47",
+                  "20.82",
+                  "17.61",
+                  "19.79",
+                  "20.83"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "FMA-Net",
+                  "17.14",
+                  "20.65",
+                  "17.13",
+                  "18.84",
+                  "19.98"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "$VAE_{MVD}$",
+                  "__19.76__",
+                  "__21.37__",
+                  "__20.54__",
+                  "__21.74__",
+                  "__21.19__"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "**GARD (Ours)**",
+                  "**21.89**",
+                  "**21.88**",
+                  "**21.25**",
+                  "**22.67**",
+                  "**22.19**"
+                ],
+                "highlight": false
+              }
+            ]
+          }
+        ],
+        "headers": [
+          "Method",
+          "HiRoom",
+          "ETH3D",
+          "DTU",
+          "7Scenes",
+          "ScanNet++"
+        ],
+        "rows": [
+          {
+            "cells": [
+              "HQ Input ",
+              "96.65",
+              "84.68",
+              "98.70",
+              "86.91",
+              "92.95"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "LQ Input ",
+              "__32.90__",
+              "61.38",
+              "66.43",
+              "51.39",
+              "71.02"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "Restormer",
+              "26.68",
+              "57.68",
+              "67.80",
+              "75.12",
+              "__76.12__"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "HI-Diff",
+              "16.02",
+              "52.56",
+              "51.13",
+              "52.72",
+              "71.61"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "InstructIR",
+              "27.68",
+              "53.80",
+              "__85.91__",
+              "74.22",
+              "68.23"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "MoCE-IR",
+              "28.60",
+              "__63.25__",
+              "84.61",
+              "65.20",
+              "72.99"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "VRT",
+              "30.17",
+              "58.98",
+              "67.01",
+              "48.02",
+              "72.67"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "FMA-Net",
+              "18.29",
+              "53.81",
+              "40.62",
+              "38.23",
+              "55.40"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "$VAE_{MVD}$",
+              "28.70",
+              "35.20",
+              "60.50",
+              "__76.50__",
+              "75.00"
+            ],
+            "highlight": false
+          },
+          {
+            "cells": [
+              "**GARD (Ours)**",
+              "**67.22**",
+              "**74.68**",
+              "**92.37**",
+              "**84.73**",
+              "**87.45**"
+            ],
+            "highlight": true
+          }
+        ]
+      },
+      "id": "bc4b55a7"
+    },
+    {
+      "id": "25008294",
+      "type": "text",
+      "visible": true,
+      "content": {
+        "text": "**GARD** achieves the best performance across all datasets on pose estimation, 3D reconstruction, and image restoration, demonstrating that restoring in a geometry-aware feature space preserves both structural fidelity and cross-view consistency. "
+      }
+    },
+    {
+      "id": "f8b4ac89",
+      "type": "text",
+      "visible": true,
+      "content": {
+        "text": "** 1. Pose Estimation **\n"
+      },
+      "title": "Qualitative Results",
+      "sectionLabel": "EVALUATION"
+    },
+    {
+      "id": "ebd2f1eb",
+      "type": "image",
+      "visible": true,
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-003.jpg",
+            "caption": "Top-down camera trajectories for ten degraded multi-view inputs, where **GARD** effectively restores accurate camera pose trajectories. Please zoom in for clearer visualization.",
+            "alt": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "5ded0f84",
+      "type": "text",
+      "visible": true,
+      "content": {
+        "text": "** 2. 3D Reconstruction **\n"
+      }
+    },
+    {
+      "id": "9f75bcd2",
+      "type": "image",
+      "visible": true,
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-004.jpg",
+            "caption": "Given degraded multi-view inputs, **GARD** effectively reconstructs the 3D geometry.",
+            "alt": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "25cc15f0",
+      "type": "text",
+      "visible": true,
+      "content": {
+        "text": "** 3. Image Restoration **\n"
+      }
+    },
+    {
+      "id": "c30633ef",
+      "type": "image",
+      "visible": true,
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-005.jpg",
+            "caption": "RGB images restored from the refined representations using a dedicated decoder. **GARD** successfully recovers high-fidelity multi-view images while preserving fine-grained details.",
+            "alt": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "07563d45",
+      "type": "text",
+      "visible": true,
+      "content": {
+        "text": "** 4. Depth Estimation **"
+      }
+    },
+    {
+      "id": "120bdf8d",
+      "type": "image",
+      "visible": true,
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-006.jpg",
+            "caption": "Baseline methods are more vulnerable to severe degradations, often producing blurred structures and visible artifacts, whereas **GARD** yields sharper and more geometrically coherent depth maps across views.",
+            "alt": ""
+          }
+        ]
+      }
+    },
+    {
+      "type": "bibtex",
+      "visible": true,
+      "title": "Citation",
+      "content": {
+        "bibtex": "Coming Soon..."
+      },
+      "id": "3c3d1b51"
+    },
+    {
+      "id": "fdbfe592",
+      "type": "nav-sidebar",
+      "visible": true,
+      "content": {
+        "navAutoFromSections": true,
+        "navItems": [
+          {
+            "label": "TL;DR",
+            "url": ""
+          },
+          {
+            "label": "Motivation",
+            "url": "#"
+          },
+          {
+            "label": "Overall Framework",
+            "url": "#"
+          },
+          {
+            "label": "Quantitative Restuls",
+            "url": "#"
+          }
+        ],
+        "navBackground": "transparent",
+        "navTextColor": "#64748b",
+        "navAccentColor": "",
+        "navSticky": true,
+        "navShowDots": true,
+        "navShowLabels": true,
+        "navLogo": ""
+      },
+      "title": "Sidebar Navigation"
+    }
+  ]
+}
