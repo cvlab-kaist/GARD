@@ -251,7 +251,10 @@ body[unresolved] { opacity: 0; display: block; overflow: hidden; position: relat
 .katex-display.leqno > .katex > .katex-html > .tag { left: 0px; right: auto; }
 .katex-display.fleqn > .katex { padding-left: 2em; text-align: left; }
 body { counter-reset: katexEqnNo 0 mmlEqnNo 0; }
-*, ::before, ::after { box-sizing: border-box; margin: 0px; padding: 0px; }
+*, ::before, ::after { box-sizing: border-box; margin: 0px; padding: 0px; cursor: default !important; }
+a, button, [role="button"] {
+  cursor: pointer !important;
+}
 :root { --app-bg: #f0f1f5; --app-sidebar-bg: #ffffff; --app-border: #e2e5eb; --app-text: #1a1d23; --app-text-dim: #555b66; --app-accent: #6366f1; --app-accent-hover: #4f46e5; --app-danger: #ef4444; --topbar-height: 52px; --sidebar-width: 460px; --z-drag-handle: 5; --z-add-backdrop: 9; --z-add-menu: 10; --z-topbar: 100; --z-dropdown-backdrop: 199; --z-dropdown: 200; --z-modal-backdrop: 300; --z-modal: 310; --z-toast: 400; }
 html { font-size: 87.5%; }
 body { font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--app-text); background: var(--app-bg); overflow: hidden; height: 100vh; }
