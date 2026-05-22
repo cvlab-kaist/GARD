@@ -1060,24 +1060,34 @@
         "media": [
           {
             "type": "image",
-            "src": "assets/img-011.jpg",
+            "src": "assets/img-025.jpg",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "assets/img-012.jpg",
+            "src": "assets/img-026.jpg",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "assets/img-013.jpg",
+            "src": "assets/img-027.jpg",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "assets/img-014.jpg",
+            "src": "assets/img-028.jpg",
             "caption": ""
           }
+          {
+            "type": "image",
+            "src": "assets/img-029.jpg",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-030.jpg",
+            "caption": ""
+          },
         ]
       }
     },
