@@ -51,9 +51,9 @@
       "tldrBorderColor": "#a51fb7",
       "tldrLabelColor": "#27272A",
       "calloutStyle": "border-left",
-      "calloutBackground": "#EEF2FF",
-      "calloutBorderColor": "#4338CA",
-      "calloutIconColor": "#4338CA",
+      "calloutBackground": "#FFFFFF",
+      "calloutBorderColor": "#a51fb7",
+      "calloutIconColor": "#a51fb7",
       "buttonStyle": "rounded",
       "buttonBackground": "#FFFFFF",
       "buttonTextColor": "#18181B",
@@ -209,7 +209,7 @@
           {
             "type": "image",
             "src": "assets/img-000.jpg",
-            "caption": "GARD restores degraded multi-view inputs jointly in geometry-aware feature space, recovering accurate 3D point clouds and high-quality RGB images simultaneously.",
+            "caption": "**GARD** restores degraded multi-view inputs jointly in geometry-aware feature space, recovering accurate 3D point clouds and high-quality RGB images simultaneously.",
             "alt": "Figure 1 — GARD framework: degraded views and depths (left) are transformed into restored views, depths, and a clean 3D point cloud (right)."
           }
         ]
@@ -221,7 +221,7 @@
       "visible": true,
       "title": "TL;DR",
       "content": {
-        "text": "**~#a51fb7:GARD~** performs diffusion-based denoising directly in the **~#a51fb7:geometry-aware feature space~** of a feed-forward 3D reconstructor — not in pixel space or compressed VAE latents — enabling simultaneous recovery of accurate 3D geometry and high-quality multi-view imagery from degraded inputs."
+        "text": "We propose **~#a51fb7:Geometry-Aware Representation Denoising (GARD)~**, a novel framework that performs diffusion-based multi-view restoration directly in the feature space of a feed-forward 3D reconstruction model, enabling **~#a51fb7:simultaneous recovery of 3D scene geometry and high-quality RGB images~** from degraded multi-view inputs. Our method outperforms existing pixel-space and VAE-based latent-space restoration approaches, demonstrating the effectiveness of geometry-aware feature denoising for robust multi-view 3D reconstruction."
       },
       "id": "30d2c5fe"
     },
@@ -254,7 +254,7 @@
       "type": "text",
       "visible": true,
       "content": {
-        "text": "Feed-forward 3D reconstruction models perform well under clean conditions, but fail under real-world degradations such as motion blur.\n\n\n**~#a51fb7:Where should restoration happen?~**\n\n⚠️ Pixel-space restoration: Ignores cross-view consistency \n\n⚠️ Multi-view restoration in VAE-based latent space: Loses fine-grained spatial details\n\n 💡 **GARD**: Restores directly in the **geometry-aware feature space**  \n\n**~#a51fb7:Key Insight~**: The reconstructor’s intermediate feature space preserves both cross-view consistency and visual detail, making it more suitable for restoration than pixel space or compressed VAE latents.",
+        "text": "Feed-forward 3D reconstruction models perform well under clean conditions, but fail under real-world degradations such as motion blur.\n\n\n**Where should restoration happen?**\n\n⚠️ **~#a51fb7:Pixel-space restoration~**: Applying a pixel-space denoiser independently to each view fails to leverage multi-view information and cannot enforce cross-view geometry consistency during restoration. This often leads to view-dependent artifacts and inconsistencies that propagate to the reconstructor, resulting in impaired geometry estimation performance.\n\n⚠️ **~#a51fb7:Multi-view restoration in VAE-based latent space~**: Restoration in compressed VAE-based latent space can introduce an information bottleneck, discarding fine-grained details and high-frequency structures essential for accurate multi-view correspondence and 3D reconstruction.\n\n 💡 **~#a51fb7:GARD~**: Perform denoising directly in the **geometry-aware feature space** of a feed-forward reconstructor, preserving both cross-view consistency and visual detail, making it more suitable for restoration than pixel space or compressed VAE latents.",
         "bulletItems": []
       },
       "id": "abd4bf96"
@@ -290,12 +290,80 @@
       "type": "text",
       "visible": true,
       "content": {
+        "text": "(a) **~#a51fb7:GARD Framework~**: The GARD denoiser is **learned within the representation space of a frozen multi-view encoder to restore degraded intermediate representations into restored representations** before they are propagated through the remaining encoder layers. The restored representations are then decoded by their respective decoders to produce geometry predictions and restored RGB images.\n\n(b) **~#a51fb7:GARD Denoiser Training~**: The GARD denoiser is optimized using an **interpolated flow matching loss** together with an **attention alignment loss**, which jointly learns the mapping from degraded to clean feature representations while preserving geometric consistency through explicit alignment of attention maps.\n\n(c) **~#a51fb7:GARD Denoiser Architecture~**: The GARD denoiser adopts a multi-view latent diffusion architecture, comprising a **DDT encoder and a DDT wide decoder, with global attention layers inserted to enable multi-view modeling**, thereby facilitating global context aggregation and reconstruction of high-dimensional multi-view representations.",
+        "bulletItems": []
+      },
+      "paddingBottom": 16
+    },
+    {
+      "id": "0652b08c",
+      "type": "spacer",
+      "visible": true,
+      "content": {
+        "height": 70
+      }
+    },
+    {
+      "id": "ff343900",
+      "type": "image",
+      "visible": true,
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-003.png",
+            "caption": "(a) PCK performance on high-quality (HQ) input images.   (b) PCK performance under progressively increasing levels of degradation (mild, moderate, and severe), demonstrating robustness to input corruption.",
+            "alt": ""
+          }
+        ]
+      },
+      "title": "Geometry-Aware Feature Analysis",
+      "sectionLabel": "METHOD"
+    },
+    {
+      "id": "31c67c48",
+      "type": "text",
+      "visible": true,
+      "content": {
+        "text": "We evaluate the PCK accuracy of three feature cost volumes under two experimental settings to validate the effectiveness of our proposed denoising space. **DA3 features preserve geometric structure more effectively than VAE and DINOv2**, achieving higher keypoint correspondence accuracy and stronger robustness to degradation, making them well-suited for representation-level denoising and downstream 3D reconstruction.\n\n"
+      },
+      "sectionLabel": ""
+    },
+    {
+      "id": "cbc716c8",
+      "type": "image",
+      "visible": true,
+      "content": {
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img-004.png",
+            "caption": "Cross-view correspondence visualization of feature cost volumes constructed from VAE, DINOv2, and DA3 feature cost volumes  under (a) clean high-quality (HQ) multi-view inputs and (b) progressively increasing degradation levels of degraded multi-view inputs (mild, moderate, and heavy).  ",
+            "alt": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "379e2320",
+      "type": "text",
+      "visible": true,
+      "content": {
         "text": "",
         "bulletItems": [
-          "**~#a51fb7:Encode Features~**: Degraded multi-view images are encoded by a frozen multi-view encoder to produce layer-wise latent representations.",
-          "**~#a51fb7:Representation Denoising~**: The GARD denoiser restores these degraded features using a multi-view diffusion model with interleaved frame-level and global cross-view attention.",
-          "**~#a51fb7:Task-Specific Decoding~**: The restored representations are decoded by their respective decoders to produce geometry predictions and restored RGB images."
+          "**~#a51fb7:DA3~**: Produce the sharpest and most geometrically consistent correspondences across views under both clean and degraded conditions.",
+          "**~#a51fb7:DINOv2~**: Achieves reasonably accurate matching with less precise and less stable response regions.",
+          "**~#a51fb7:VAE~**: Exhibit highly scattered and ambiguous correspondences under both clean and degraded conditions, reflecting limited geometry-aware representation quality caused by heavy latent compression."
         ]
+      }
+    },
+    {
+      "id": "4740dbf6",
+      "type": "callout",
+      "visible": true,
+      "content": {
+        "text": "**~#a51fb7:DA3 > DINOv2 ≫ VAE~** in correspondence accuracy and robustness, maintaining strong geometric consistency as degradation increases.",
+        "calloutIcon": "💡"
       }
     },
     {
@@ -662,6 +730,129 @@
                 "highlight": false
               }
             ]
+          },
+          {
+            "label": "Depth Estimation (d1 ↑)",
+            "headers": [
+              "Method",
+              "HiRoom",
+              "ETH3D",
+              "DTU",
+              "7Scenes",
+              "ScanNet++"
+            ],
+            "rows": [
+              {
+                "cells": [
+                  "HQ Input",
+                  "99.4",
+                  "99.7",
+                  "95.2",
+                  "93.7",
+                  "97.5"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "LQ Input",
+                  "78.6",
+                  "90.4",
+                  "94.5",
+                  "81.9",
+                  "89.5"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "Restormer",
+                  "74.1",
+                  "82.2",
+                  "94.6",
+                  "85.0",
+                  "89.1"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "HI-Diff",
+                  "70.2",
+                  "86.3",
+                  "93.8",
+                  "82.2",
+                  "89.2"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "InstructIR",
+                  "71.7",
+                  "81.3",
+                  "95.0",
+                  "83.3",
+                  "83.4"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "MoCE-IR",
+                  "76.8",
+                  "88.3",
+                  "95.6",
+                  "84.5",
+                  "89.6"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "VRT",
+                  "77.9",
+                  "90.2",
+                  "94.7",
+                  "80.5",
+                  "89.8"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "FMA-Net",
+                  "70.8",
+                  "88.0",
+                  "94.1",
+                  "76.8",
+                  "85.5"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "$VAE_{MVD}$",
+                  "__80.2__",
+                  "__95.4__",
+                  "__95.9__",
+                  "__89.0__",
+                  "__93.2__"
+                ],
+                "highlight": false
+              },
+              {
+                "cells": [
+                  "**GARD (Ours)**",
+                  "**97.2**",
+                  "**98.4**",
+                  "**96.1**",
+                  "**92.7**",
+                  "**96.7**"
+                ],
+                "highlight": false
+              }
+            ]
           }
         ],
         "headers": [
@@ -788,11 +979,12 @@
       "id": "bc4b55a7"
     },
     {
-      "id": "25008294",
-      "type": "text",
+      "id": "42077531",
+      "type": "callout",
       "visible": true,
       "content": {
-        "text": "**GARD** achieves the best performance across all datasets on pose estimation, 3D reconstruction, and image restoration, demonstrating that restoring in a geometry-aware feature space preserves both structural fidelity and cross-view consistency. "
+        "text": "**GARD** achieves the best performance across all datasets on pose estimation, 3D reconstruction, and image restoration, demonstrating that restoring in a geometry-aware feature space preserves both structural fidelity and cross-view consistency. ",
+        "calloutIcon": "💡"
       }
     },
     {
@@ -808,22 +1000,46 @@
       "type": "text",
       "visible": true,
       "content": {
-        "text": "** 1. Pose Estimation **\n"
+        "text": "## ** 1. Pose Estimation **"
       },
       "title": "Qualitative Results",
       "sectionLabel": "EVALUATION"
     },
     {
-      "id": "ebd2f1eb",
-      "type": "image",
+      "id": "5d001d43",
+      "type": "carousel",
       "visible": true,
       "content": {
         "media": [
           {
             "type": "image",
-            "src": "assets/img-003.jpg",
-            "caption": "Top-down camera trajectories for ten degraded multi-view inputs, where **GARD** effectively restores accurate camera pose trajectories. Please zoom in for clearer visualization.",
-            "alt": ""
+            "src": "assets/img-005.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-006.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-007.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-008.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-009.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-010.png",
+            "caption": ""
           }
         ]
       }
@@ -833,20 +1049,34 @@
       "type": "text",
       "visible": true,
       "content": {
-        "text": "** 2. 3D Reconstruction **\n"
+        "text": "## ** 2. 3D Reconstruction **"
       }
     },
     {
-      "id": "9f75bcd2",
-      "type": "image",
+      "id": "5a4c94a0",
+      "type": "carousel",
       "visible": true,
       "content": {
         "media": [
           {
             "type": "image",
-            "src": "assets/img-004.jpg",
-            "caption": "Given degraded multi-view inputs, **GARD** effectively reconstructs the 3D geometry.",
-            "alt": ""
+            "src": "assets/img-011.jpg",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-012.jpg",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-013.jpg",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-014.jpg",
+            "caption": ""
           }
         ]
       }
@@ -856,20 +1086,39 @@
       "type": "text",
       "visible": true,
       "content": {
-        "text": "** 3. Image Restoration **\n"
+        "text": "## ** 3. Image Restoration **"
       }
     },
     {
-      "id": "c30633ef",
-      "type": "image",
+      "id": "0bc42ad9",
+      "type": "carousel",
       "visible": true,
       "content": {
         "media": [
           {
             "type": "image",
-            "src": "assets/img-005.jpg",
-            "caption": "RGB images restored from the refined representations using a dedicated decoder. **GARD** successfully recovers high-fidelity multi-view images while preserving fine-grained details.",
-            "alt": ""
+            "src": "assets/img-015.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-016.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-017.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-018.png",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-019.png",
+            "caption": ""
           }
         ]
       }
@@ -879,22 +1128,50 @@
       "type": "text",
       "visible": true,
       "content": {
-        "text": "** 4. Depth Estimation **"
+        "text": "## ** 4. Depth Estimation **"
       }
     },
     {
-      "id": "120bdf8d",
-      "type": "image",
+      "id": "77d8623c",
+      "type": "carousel",
       "visible": true,
       "content": {
         "media": [
           {
             "type": "image",
-            "src": "assets/img-006.jpg",
-            "caption": "Baseline methods are more vulnerable to severe degradations, often producing blurred structures and visible artifacts, whereas **GARD** yields sharper and more geometrically coherent depth maps across views",
-            "alt": ""
+            "src": "assets/img-020.jpg",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-021.jpg",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-022.jpg",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-023.jpg",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "assets/img-024.jpg",
+            "caption": ""
           }
         ]
+      }
+    },
+    {
+      "id": "beb3e80a",
+      "type": "callout",
+      "visible": true,
+      "content": {
+        "text": "Restoring directly in a geometry-aware feature space preserves both visual fidelity and cross-view consistency, leading to sharper images, more accurate geometry, and improved downstream 3D understanding.",
+        "calloutIcon": "💡"
       }
     },
     {
