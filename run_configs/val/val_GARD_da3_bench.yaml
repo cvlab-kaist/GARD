@@ -1,0 +1,152 @@
+
+# ==============================================================================
+# GARD Eval Configuration
+# ==============================================================================
+MVRM_EVAL:
+  eval_method: w_mvrm
+  load_lq: true
+
+  rgb_decoder: 
+    stage_1:
+      target: GLD.src.stage1.rae_da3.RAE_DA3
+      params:
+        encoder_pretrained_path: 'depth-anything/DA3-Base'
+        encoder_input_size: 252  # DA3 standard input size
+        encoder_type: 'DA3EncoderDirect'
+        decoder_config_path: 'GLD/configs/decoder/ViTXL'
+        dpt_decoder_path: 
+        da3_weights_path: 
+        dpt_model_type: 'da3-base'
+        mae_weight: ckpts/mae_adapter_giant.pt
+        noise_tau: 0.0
+        reshape_to_2d: true
+        normalization_stat_path: GLD/model_stats/da3/normalization_stats_level0.pt
+        
+
+
+
+# ==============================================================================
+# Denoiser Configuration
+# ==============================================================================
+denoiser:
+  model: GARD
+  target: gard.GARD.GARD
+  params:
+    input_size: 
+    patch_size: 1
+    in_channels: 1536
+    hidden_size: [1536, 3072]
+    depth: [8, 6]
+    num_heads: [16, 16]
+    mlp_ratio: 4.0
+    class_dropout_prob:
+    num_classes: 
+    use_qknorm: true 
+    use_swiglu: true
+    use_rope: true
+    use_rmsnorm: true
+    wo_shift: false
+    use_pos_embed: false
+    use_global_residual: false
+  ckpt: ckpts/gard_denoiser.pt
+  
+
+# ==============================================================================
+# GARD Configuration
+# ==============================================================================
+mvrm:
+  noise_lvl: 0.3 
+  lq_latent_cond: addition   
+  train:
+    extract_feat_layers: [17]
+    concat_feat: False
+    break_and_return_feat: false
+  val:
+    restore_feat_layers: [17]
+    concat_feat: False 
+    skip_and_input_feat: false
+    guidance:
+      use_cfg: false
+      cfg_scale: 1.0
+    analysis:
+      vis_attn_map: false
+      mvrm_attn_map:
+        extract_idx: [1,3,5,7,9,11,13]
+    lq_cond_sampling: true
+
+
+# ==============================================================================
+# Transport Configuration
+# ==============================================================================
+transport:
+  params:
+    path_type: 'Linear'
+    prediction: 'velocity'
+    loss_weight: null
+    time_dist_type: 'logit-normal_0_1'
+sampler:
+  mode: ODE
+  params:
+    sampling_method: 'euler'
+    num_steps: 50
+    atol: 1.0e-6
+    rtol: 1.0e-3
+    reverse: false
+misc:
+  latent_size: 
+  num_classes: 
+  time_dist_shift_dim: 1492992  # 1536*27*36
+  time_dist_shift_base: 4096
+
+
+# ==============================================================================
+# Model Configuration
+# ==============================================================================
+model:
+  # Path to model checkpoint or HuggingFace model ID
+  path: depth-anything/DA3-GIANT-1.1
+  use_ray_pose: true
+
+
+# ==============================================================================
+# Workspace Configuration
+# ==============================================================================
+workspace:
+  # Working directory for outputs (model results, metrics, etc.)
+  work_dir: result_val/GARD_da3_bench
+
+
+
+
+# ==============================================================================
+# Evaluation Configuration
+# ==============================================================================
+eval:
+  datasets:
+    - 7scenes
+    - dtu
+    - dtu64
+    - hiroom
+    - scannetpp
+    - eth3d
+  modes:
+    - pose
+    - depth
+    - recon_unposed
+  ref_view_strategy: "saddle_balanced"
+  scenes: []
+  max_frames: 10
+  eval_only: false
+  print_only: false
+
+# ==============================================================================
+# Inference Configuration
+# ==============================================================================
+inference:
+  num_fusion_workers: 2
+  debug: false
+
+# ==============================================================================
+# Preset Configurations
+# ==============================================================================
+# These can be activated via command line: --preset full_eval

@@ -1,0 +1,243 @@
+# ==============================================================================
+# Stage 1: frozen feature backbone (Depth Anything 3)
+# ==============================================================================
+# GARD denoises the feature representations of a frozen, pretrained feed-forward
+# 3D reconstruction backbone, rather than raw pixels. This stage only loads that
+# backbone — it is not trained.
+stage_1:
+  model: da3               # which backbone family to load ('da3' is the only path exercised by this release)
+  model_size: GIANT        # descriptive only (folds into the auto-generated run name); the actual size comes from stage_1.da3.ckpt below
+  rae:                     # unused when model: da3 (only relevant for an alternate RAE-based stage-1, not part of this release) — left empty
+    target:
+    params:
+      encoder_cls:
+      encoder_config_path:
+      encoder_input_size:
+      encoder_params:
+      decoder_config_path:
+      pretrained_decoder_path:
+      noise_tau:
+      reshape_to_2d:
+      normalization_stat_path:
+  da3:
+    ckpt: depth-anything/DA3-GIANT-1.1   # HuggingFace model id (or local path) for the frozen DA3 backbone
+
+
+
+# ==============================================================================
+# Stage 2: the GARD denoiser — this is the only thing actually trained
+# ==============================================================================
+stage_2:
+  model: mvrm              # descriptive only (folds into the auto-generated run name)
+  target: gard.GARD.GARD   # dotted import path to the denoiser class, see src/gard/GARD.py
+  params:                  # constructor kwargs passed to the GARD class above
+    input_size:                     # left unset here; resolved at runtime from the DA3 feature map size
+    patch_size: 1
+    in_channels: 1536               # DA3 feature dimensionality (the denoiser operates on DA3's feature space, not pixel space)
+    hidden_size: [1536, 3072]       # DDT block widths: [encoder stage, decoder stage]
+    depth: [8, 6]                   # transformer depth per DDT stage: [encoder, decoder]
+    num_heads: [16, 16]             # attention heads per DDT stage
+    mlp_ratio: 4.0
+    class_dropout_prob:             # unused (no class-conditioning in this setup)
+    num_classes:                    # unused (no class-conditioning in this setup)
+    use_qknorm: true                # QK-normalization inside attention
+    use_swiglu: true                # SwiGLU MLP instead of a vanilla GELU MLP
+    use_rope: true                  # rotary position embeddings
+    use_rmsnorm: true               # RMSNorm instead of LayerNorm
+    wo_shift: false                 # if true, disables the AdaLN shift term (scale-only modulation)
+    use_pos_embed: false            # absolute position embeddings (off here — RoPE is used instead)
+    use_global_residual: false      # global residual connection around the whole denoiser
+  ckpt:                             # denoiser checkpoint to resume training from; empty = train from scratch
+
+
+
+# ==============================================================================
+# Flow-matching transport — defines the noise-to-data process the denoiser is
+# trained to invert
+# ==============================================================================
+transport:
+  params:
+    path_type: 'Linear'                 # linear interpolation path between data and noise
+    prediction: 'velocity'              # the denoiser predicts the velocity field (rather than noise or x0 directly)
+    loss_weight: null                   # uniform loss weighting across timesteps
+    time_dist_type: 'logit-normal_0_1'  # timestep sampling distribution used during training
+
+
+# ==============================================================================
+# ODE sampler — used at validation/inference time to integrate the flow from
+# noise back to a clean latent
+# ==============================================================================
+sampler:
+  mode: ODE
+  params:
+    sampling_method: 'euler'
+    num_steps: 50                   # number of Euler integration steps
+    atol: 1.0e-6
+    rtol: 1.0e-3
+    reverse: false
+
+
+# ==============================================================================
+# Classifier-free guidance — not read by the training/eval code in this release
+# (kept only for structural compatibility with other configs in this codebase).
+# The CFG toggles that actually take effect are mvrm.train.guidance /
+# mvrm.val.guidance and training.guidance.lq_drop, further below.
+# ==============================================================================
+guidance:
+  method: 'cfg'
+  scale: 1.0
+  t_min: 0.0
+  t_max: 1.0
+
+
+# ==============================================================================
+# Constants derived from the DA3 feature map size
+# ==============================================================================
+misc:
+  latent_size:                      # left unset here; resolved at runtime
+  num_classes:                      # unused (no class-conditioning)
+  time_dist_shift_dim: 1492992  # 1536*27*36 — channels x height x width of the DA3 feature map being denoised
+  time_dist_shift_base: 4096        # reference size the shift formula below is calibrated against
+  # time_dist_shift = sqrt(time_dist_shift_dim / time_dist_shift_base) rescales the
+  # sampled training timestep so the noise schedule stays well-behaved as the
+  # feature map size changes (same resolution-dependent shift trick used in SD3/Flux).
+
+
+# ==============================================================================
+# Training loop settings
+# ==============================================================================
+training:
+  global_seed: 42
+  precision: fp32
+  epochs: 30
+  global_batch_size: 1              # scenes per optimizer step, before grad accumulation
+  grad_accum_steps: 1
+  ema_decay: 0.9995                 # decay rate for the EMA copy of the denoiser weights
+  num_workers: 4                    # dataloader worker processes
+  shuffle: true
+  log_interval: 1                   # log every N steps
+  ckpt_step_interval: 100000        # save a checkpoint every N steps
+  clip_grad: 1.0                    # gradient-norm clipping
+  optimizer:
+    lr: 2.0e-4
+    betas: [0.9, 0.95]
+    weight_decay: 0.0
+  scheduler:
+    type: linear
+    warmup_epochs: 15
+    decay_end_epoch: 30
+    base_lr: 2e-4
+    final_lr: 2e-5
+    warmup_from_zero: false
+  guidance:
+    lq_drop: 0.1                    # probability of dropping the LQ conditioning during training, enabling classifier-free-guidance-style unconditional training
+
+
+
+
+# ==============================================================================
+# Logging
+# ==============================================================================
+log:
+  result_root_dir: result_train/gard-hypersim-tartanair   # checkpoints + logs are written here
+  tracker:
+    # Weights & Biases logging is disabled by default (all fields below left
+    # empty). To enable it, remove/comment this block and uncomment the one below.
+    name:
+    wandb:
+      key:
+      entity:
+      project:
+      msg:
+
+  # # UNCOMMENT TO USE WANDB
+  # tracker:
+  #   name: wandb
+  #   wandb:
+  #     key: add_your_wandb_key_here
+  #     entity: name_of_your_wandb
+  #     project: name_of_your_project
+  #     msg: add_additional_log_msg_here
+
+
+# ==============================================================================
+# Training data — degradations (motion-blur kernels etc.) are synthesized on the
+# fly from clean multi-view data; there is no static "degraded" dataset on disk
+# for training (unlike the DA3-BENCH evaluation data)
+# ==============================================================================
+data:
+  train:
+    image_size: 512
+    max_num_input_view: 4           # max number of views sampled per training scene
+    list: [hypersim, tartanair]     # which of the datasets below are actually used (both are combined into one training set)
+
+    hypersim:
+      ann_path: download_scripts/hypersim/metadata_images_split_scene_v1.csv   # scene/split annotation file
+      hq_root_path: data/train/hypersim   # local clean-image root (matches download_scripts/hypersim/download_hypersim.sh)
+      lq_kernel_size: [50, 300]           # synthesized motion-blur kernel size range, in pixels
+      lq_intensity_range: [0.0, 0.3]      # synthesized blur intensity range
+      view_selection:
+        strategy: near_camera             # how the reference/context views are sampled for a training scene
+        expand_ratio: 2
+      process_res: 504
+      patch_size: 14
+
+    tartanair:
+      ann_path:                            # unused for TartanAir (scenes are discovered from the directory layout directly)
+      hq_root_path: data/train/tartanair    # local clean-image root (matches download_scripts/tartanair_tools/download_tartanair.sh)
+      lq_kernel_size: [50, 300]
+      lq_intensity_range: [0.0, 0.3]
+      view_selection:
+        strategy: near_random
+        expand_ratio: 4
+      process_res: 504
+      patch_size: 14
+
+
+# ==============================================================================
+# GARD (MVRM) — the core restoration recipe: how the LQ/HQ latents are combined
+# going into the denoiser, and which losses supervise the denoised representation
+# ==============================================================================
+mvrm:
+  training_lq_cond: true      # if true, the LQ latent is added a second time directly onto the noisy training sample (on top of being mixed into x0 below) — "double conditioning" for LQ2HQ CFG-style training
+  noise_lvl: 0.3               # amount of noise mixed with the LQ latent to form the denoiser's input: x0 = noise * noise_lvl + lq_latent
+  lq_latent_cond: addition     # how the LQ latent conditions the denoiser: [addition, concat]
+  train:
+    # DPT Head input feats = [19, 27, 33, 39]
+    extract_feat_layers: [17]           # which DA3 backbone layer's features are extracted and denoised
+    concat_feat: False
+    break_and_return_feat: false
+  val:
+    restore_feat_layers: [17]           # must match train.extract_feat_layers
+    concat_feat: False
+    skip_and_input_feat: false
+    guidance:
+      use_cfg: false                    # enable classifier-free guidance at sampling time
+      cfg_scale: 1.0
+  loss:
+    attn_align:
+      use: true                         # enable the attention-alignment loss
+      lambda_coeff: 1.0                 # loss weight
+      mvrm_layer_idx: 9                 # denoiser layer whose attention maps are aligned
+      da3_point_cloud:
+        use: true                       # supervise attention alignment with DA3's predicted cross-view point-cloud correspondences
+        vis_pc_temperature: 0.01
+        visibility_mask: cycle_consistency      # [none, cycle_consistency, reprojection] — how cross-view point visibility is determined
+        vis_pc_cycle_threshold: 1.5             # 0=exact match; >0=Chebyshev patch distance (cycle_consistency only)
+        reprojection_depth_threshold: 0.1       # relative depth error threshold (reprojection only)
+
+
+  # MVRM ATTENTION MAP EXTRACTION
+  analysis:
+    vis_attn_map: true                  # save attention-map visualizations during training
+    mvrm_attn_map:
+      extract_idx: [9]                  # which denoiser layer(s) to visualize
+
+
+# HQ ATTENTION MAP EXTRACTION
+analysis_HQ:
+  # vis_map: true
+  vis_map: false                        # save DA3's own (HQ-branch) attention-map visualizations
+  da3_attn_map:
+    extract_idx: [17]
+

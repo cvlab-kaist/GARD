@@ -1,0 +1,1 @@
+python download_scripts/hypersim/hypersim.py --downloads_dir ./data/train/hypersim --decompress_dir ./data/train/hypersim --delete_archive_after_decompress

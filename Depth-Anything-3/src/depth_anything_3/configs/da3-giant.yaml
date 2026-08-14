@@ -1,0 +1,118 @@
+__object__:
+  path: depth_anything_3.model.da3
+  name: DepthAnything3Net
+  args: as_params
+
+net:
+  __object__:
+    path: depth_anything_3.model.dinov2.dinov2
+    name: DinoV2
+    args: as_params
+  name: vitg
+  out_layers: [19, 27, 33, 39]
+  alt_start: 13
+  qknorm_start: 13
+  rope_start: 13
+  cat_token: True
+
+  # # new DinoV2 for MVRM
+  # __object__:
+  #   path: depth_anything_3.model.dinov2_mvrm.dinov2_mvrm
+  #   name: DinoV2MVRM
+  #   args: as_params
+  # name: vitg
+  # out_layers: [19, 27, 33, 39]
+  # alt_start: 13
+  # qknorm_start: 13
+  # rope_start: 13
+  # cat_token: True
+  
+
+  # mvrm:
+  #   __object__:
+  #     path: RAE.src.stage2.models.DDT
+  #     name: DiTwDDTHead
+  #     args: as_params 
+  #   stage_2:
+  #     model: DiTwDDTHead
+  #     target: stage2.models.DDT.DiTwDDTHead
+  #     params:
+  #       input_size: 32
+  #       patch_size: 1
+  #       in_channels: 768
+  #       hidden_size: [1152, 2048]
+  #       depth: [28, 2]
+  #       num_heads: [16, 16]
+  #       mlp_ratio: 4.0
+  #       class_dropout_prob: 0.1
+  #       num_classes: 1000
+  #       use_qknorm: false
+  #       use_swiglu: true
+  #       use_rope: true
+  #       use_rmsnorm: true
+  #       wo_shift: false
+  #       use_pos_embed: true
+  #     # ckpt: RAE/models/DiTs/Dinov2/wReg_base/ImageNet512/DiTDH-XL_ep400/stage2_model.pt
+  #   transport:
+  #     params:
+  #       path_type: 'Linear'
+  #       prediction: 'velocity'
+  #       loss_weight: null
+  #       time_dist_type: 'logit-normal_0_1'
+
+
+
+
+head:
+  __object__:
+    path: depth_anything_3.model.dualdpt
+    name: DualDPT
+    args: as_params
+
+  dim_in: &head_dim_in 3072
+  output_dim: 2
+  features: &head_features 256
+  out_channels: &head_out_channels [256, 512, 1024, 1024]
+
+
+cam_enc:
+  __object__:
+    path: depth_anything_3.model.cam_enc
+    name: CameraEnc
+    args: as_params
+
+  dim_out: 1536
+
+cam_dec:
+  __object__:
+    path: depth_anything_3.model.cam_dec
+    name: CameraDec
+    args: as_params
+
+  dim_in: 3072
+
+
+gs_head:
+  __object__:
+    path: depth_anything_3.model.gsdpt
+    name: GSDPT
+    args: as_params
+
+  dim_in: *head_dim_in
+  output_dim: 38  # should align with gs_adapter's setting, for gs params
+  features: *head_features
+  out_channels: *head_out_channels
+
+
+gs_adapter:
+  __object__:
+    path: depth_anything_3.model.gs_adapter
+    name: GaussianAdapter
+    args: as_params
+
+  sh_degree: 2
+  pred_color: false  # predict SH coefficient if false
+  pred_offset_depth: true
+  pred_offset_xy: true
+  gaussian_scale_min: 1e-5
+  gaussian_scale_max: 30.0

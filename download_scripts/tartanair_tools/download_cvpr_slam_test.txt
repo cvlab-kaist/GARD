@@ -1,0 +1,3 @@
+https://airlab-share.andrew.cmu.edu:8081/tartanair_test/tartanair-test-mono-release.tar.gz
+https://airlab-share.andrew.cmu.edu:8081/tartanair_test/tartanair-test-stereo-release.tar.gz
+https://airlab-share.andrew.cmu.edu:8081/tartanair_test/tartanair-test-release.tar.gz
