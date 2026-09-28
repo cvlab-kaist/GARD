@@ -27,6 +27,7 @@ GARD: Geometry-Aware Representation Denoising for <br>Robust Multi-view 3D Recon
     <sup>*</sup> Equal&nbsp;contribution. <sup>&dagger;</sup> Corresponding&nbsp;author.
   </p>
 
+<img src="https://img.shields.io/badge/NeurIPS-2026-8B2BB2">
 <a href="https://arxiv.org/abs/2605.26230">
   <img src="https://img.shields.io/badge/arXiv-2605.26230-B31B1B">
 </a>
@@ -41,6 +42,7 @@ GARD: Geometry-Aware Representation Denoising for <br>Robust Multi-view 3D Recon
 # 🔈 News 
 - 📄 **[2026-05-25]** GARD paper released in [arxiv](https://arxiv.org/abs/2605.26230) 
 - 🔥 **[2026-08-16]**  Initial release of the training/inferece code, data, and model weights
+- 🎉 **[2026-09-29]** GARD is accepted to **NeurIPS 2026**!
 
 
 
@@ -132,10 +134,10 @@ Trains the GARD denoiser using [`run_configs/train/train_GARD.yaml`](run_configs
 ## Citation
 
 ```
-@article{kim2026geometry,
+@inproceedings{kim2026geometry,
   title={Geometry-Aware Representation Denoising for Robust Multi-view 3D Reconstruction},
-  author={Kim, Jin Hyeon and Lee, Jaeeun and Kim, Claire and Oh, Kyoungjin and Cho, Paul Hyunbin and Min, Jaewon and Choi, Yeji and Park, Jihye and Park, Hyunhee and Park, Minkyu and others},
-  journal={arXiv preprint arXiv:2605.26230},
+  author={Kim, Jin Hyeon and Lee, Jaeeun and Kim, Claire and Oh, Kyoungjin and Cho, Paul Hyunbin and Min, Jaewon and Choi, Yeji and Park, Jihye and Park, Hyunhee and Park, Minkyu and Kim, Seungryong},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
   year={2026}
 }
 ```
