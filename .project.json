@@ -120,7 +120,7 @@
             "highlight": false
           }
         ],
-        "venue": "arXiv",
+        "venue": "NeurIPS",
         "venueYear": "2026"
       },
       "id": "2598e57d"
@@ -1198,7 +1198,7 @@
       "visible": true,
       "title": "Citation",
       "content": {
-        "bibtex": "Coming Soon..."
+        "bibtex": "@inproceedings{kim2026geometry,\n  title={Geometry-Aware Representation Denoising for Robust Multi-view 3D Reconstruction},\n  author={Jin Hyeon Kim and Jaeeun Lee and Claire Kim and Kyoungjin Oh and Paul Hyunbin Cho and Jaewon Min and Yeji Choi and Jihye Park and Hyunhee Park and Minkyu Park and Seungryong Kim},\n  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},\n  year={2026},\n}"
       },
       "id": "3c3d1b51"
     },
